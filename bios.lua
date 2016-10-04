@@ -850,7 +850,9 @@ if fs.exists( ".settings" ) then
     settings.load( ".settings" )
 end
 
-dofile'startup'
+local fn, err = loadfile((select(1, ...)))
+if err then error(err) end
+fn(table.unpack({...}, 2, select('#', ...)))
 
 -- If the shell errored, let the user read it.
 term.redirect( term.native() )
