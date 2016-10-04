@@ -850,34 +850,10 @@ if fs.exists( ".settings" ) then
     settings.load( ".settings" )
 end
 
--- Run the shell
-local ok, err = pcall( function()
-    parallel.waitForAny( 
-        function()
-            local sShell
-            if term.isColour() and settings.get( "bios.use_multishell" ) then
-                sShell = "rom/programs/advanced/multishell"
-            else
-                sShell = "rom/programs/shell"
-            end
-            os.run( {}, sShell )
-            os.run( {}, "rom/programs/shutdown" )
-        end,
-        function()
-            rednet.run()
-        end )
-end )
+dofile'startup'
 
 -- If the shell errored, let the user read it.
 term.redirect( term.native() )
-if not ok then
-    printError( err )
-    pcall( function()
-        term.setCursorBlink( false )
-        print( "Press any key to continue" )
-        os.pullEvent( "key" )
-    end )
-end
 
 -- End
 os.shutdown()
