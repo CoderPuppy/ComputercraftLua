@@ -850,6 +850,13 @@ if fs.exists( ".settings" ) then
     settings.load( ".settings" )
 end
 
+function write(text)
+	prev.io.write(text)
+	return 1
+end
+textutils.slowWrite = write
+textutils.pagedPrint = print
+
 local fn, err = loadfile((select(1, ...)))
 if err then error(err) end
 fn(table.unpack({...}, 2, select('#', ...)))
